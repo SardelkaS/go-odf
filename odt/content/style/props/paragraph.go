@@ -2,7 +2,7 @@ package props
 
 import (
 	"fmt"
-	"github.com/SardelkaS/go-odf/odt/styles/style/types"
+	"github.com/SardelkaS/go-odf/odt/content/style/types"
 )
 
 type ParagraphProps struct {

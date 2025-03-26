@@ -2,7 +2,7 @@ package props
 
 import (
 	"fmt"
-	"github.com/SardelkaS/go-odf/odt/styles/style/types"
+	types2 "github.com/SardelkaS/go-odf/odt/content/style/types"
 	"strconv"
 )
 
@@ -10,10 +10,10 @@ type TextProps struct {
 	fontSize        uint64
 	fontSizeAsian   uint64
 	fontSizeComplex uint64
-	fontName        types.FontName
-	fontNameComplex types.FontName
-	language        types.Language
-	country         types.Country
+	fontName        types2.FontName
+	fontNameComplex types2.FontName
+	language        types2.Language
+	country         types2.Country
 }
 
 // newTextProps creates new TextProps with default values
@@ -22,10 +22,10 @@ func newTextProps() TextProps {
 		fontSize:        14,
 		fontSizeAsian:   14,
 		fontSizeComplex: 14,
-		fontName:        types.FontName_TimesNewRoman,
-		fontNameComplex: types.FontName_UNDEFINED,
-		language:        types.Language_en,
-		country:         types.Country_US,
+		fontName:        types2.FontName_TimesNewRoman,
+		fontNameComplex: types2.FontName_UNDEFINED,
+		language:        types2.Language_en,
+		country:         types2.Country_US,
 	}
 }
 
@@ -40,17 +40,17 @@ func (t TextProps) SetFontSize(fs uint64) error {
 }
 
 // SetFontName set font name
-func (t TextProps) SetFontName(fn types.FontName) {
+func (t TextProps) SetFontName(fn types2.FontName) {
 	t.fontName = fn
 }
 
 // SetLanguage set language
-func (t TextProps) SetLanguage(l types.Language) {
+func (t TextProps) SetLanguage(l types2.Language) {
 	t.language = l
 }
 
 // SetCountry set country
-func (t TextProps) SetCountry(c types.Country) {
+func (t TextProps) SetCountry(c types2.Country) {
 	t.country = c
 }
 
@@ -62,7 +62,7 @@ func (t TextProps) Generate() string {
 	if t.fontSizeComplex == 0 {
 		t.fontSizeComplex = t.fontSize
 	}
-	if t.fontNameComplex == types.FontName_UNDEFINED {
+	if t.fontNameComplex == types2.FontName_UNDEFINED {
 		t.fontNameComplex = t.fontName
 	}
 

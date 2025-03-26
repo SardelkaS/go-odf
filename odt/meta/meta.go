@@ -29,38 +29,47 @@ func New() Meta {
 	}
 }
 
+// SetGenerator set generator metadata field
 func (m Meta) SetGenerator(g string) {
 	m.generator = g
 }
 
+// SetTitle set title metadata field
 func (m Meta) SetTitle(t string) {
 	m.title = t
 }
 
+// SetDescription set description metadata field
 func (m Meta) SetDescription(d string) {
 	m.description = d
 }
 
+// SetSubject set subject metadata field
 func (m Meta) SetSubject(s string) {
 	m.subject = s
 }
 
+// SetInitialCreator set initial creator metadata field
 func (m Meta) SetInitialCreator(i string) {
 	m.initialCreator = i
 }
 
+// SetCreator set creator metadata field
 func (m Meta) SetCreator(c string) {
 	m.creator = c
 }
 
+// SetCreationDate set creation date metadata field
 func (m Meta) SetCreationDate(c time.Time) {
 	m.creationDate = c
 }
 
+// SetDate set date metadata field
 func (m Meta) SetDate(d time.Time) {
 	m.date = d
 }
 
+// Generate generates xml code
 func (m Meta) Generate() string {
 	return fmt.Sprintf(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <document-meta xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xlink="http://www.w3.org/1999/xlink" office:version="1.3">

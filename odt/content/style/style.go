@@ -2,8 +2,8 @@ package style
 
 import (
 	"fmt"
-	"github.com/SardelkaS/go-odf/odt/styles/style/props"
-	"github.com/SardelkaS/go-odf/odt/styles/style/types"
+	"github.com/SardelkaS/go-odf/odt/content/style/props"
+	"github.com/SardelkaS/go-odf/odt/content/style/types"
 	"strconv"
 	"sync/atomic"
 )
