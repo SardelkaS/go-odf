@@ -10,8 +10,6 @@ import (
 
 var nameIter = atomic.Uint64{}
 
-const _defaultParentStyleName = "Обычный"
-
 type Style struct {
 	name            string
 	parentStyleName string
@@ -24,8 +22,8 @@ func New() Style {
 	iter := nameIter.Load()
 	nameIter.Add(1)
 	if iter == 0 {
-		iter = 1
-		nameIter.Add(1)
+		iter = 2
+		nameIter.Add(2)
 	}
 
 	return Style{
@@ -44,6 +42,6 @@ func (s Style) GetName() string {
 // Generate generates xml code
 func (s Style) Generate() string {
 	propsXml := s.Props.Generate()
-	return fmt.Sprintf(`<style style:name="%s" style:parent-style-name="%s" style:family="%s">%s</style>`,
+	return fmt.Sprintf(`<style:style style:name="%s" style:parent-style-name="%s" style:family="%s">%s</style:style>`,
 		s.name, s.parentStyleName, s.family, propsXml)
 }

@@ -4,7 +4,7 @@ type Family string
 
 const (
 	// Family_Paragraph Paragraph styles - for paragraph formatting (main text, headings, indents etc.)
-	Family_Paragraph = "Paragraph"
+	Family_Paragraph = "paragraph"
 
 	// Family_Text Text styles - for inline text formatting (font, color, emphasis)
 	Family_Text = "Text"

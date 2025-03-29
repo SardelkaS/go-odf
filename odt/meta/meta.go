@@ -18,7 +18,7 @@ type Meta struct {
 
 func New() Meta {
 	return Meta{
-		generator:      "SardelkaS/go-odf",
+		generator:      "MicrosoftOffice/15.0 MicrosoftWord",
 		title:          "",
 		description:    "",
 		subject:        "",
@@ -71,17 +71,22 @@ func (m Meta) SetDate(d time.Time) {
 
 // Generate generates xml code
 func (m Meta) Generate() string {
-	return fmt.Sprintf(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<document-meta xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xlink="http://www.w3.org/1999/xlink" office:version="1.3">
-	<meta>
-		<generator>%s</generator>
+	return fmt.Sprintf(
+		`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<office:document-meta xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    xmlns:ooo="http://openoffice.org/2004/office" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+    xmlns:grddl="http://www.w3.org/2003/g/data-view#" office:version="1.4">
+	<office:meta>
+		<meta:generator>%s</meta:generator>
 		<title>%s</title>
 		<description>%s</description>
 		<subject>%s</subject>
 		<initial-creator>%s</initial-creator>
 		<creator>%s</creator>
-		<creation-date>%s</creation-date>
-		<date>%s</date>
+		<meta:creation-date>%s</meta:creation-date>
+		<dc:date>%s</dc:date>
 		<template xlink:href="Normal.dotm" xlink:type="simple" />
 		<editing-cycles>
 			1
@@ -89,7 +94,7 @@ func (m Meta) Generate() string {
 		<editing-duration>
 			PT60S
 		</editing-duration>
-	</meta>
-</document-meta>`,
-		m.generator, m.title, m.subject, m.subject, m.initialCreator, m.creator, m.creationDate.Format(time.RFC3339), m.date.Format(time.RFC3339))
+	</office:meta>
+</office:document-meta>`,
+		m.generator, m.title, m.subject, m.subject, m.initialCreator, m.creator, m.creationDate.Format("2006-01-02T15:04:05")+"Z", m.date.Format("2006-01-02T15:04:05")+"Z")
 }
