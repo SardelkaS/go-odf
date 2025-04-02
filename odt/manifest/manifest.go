@@ -13,5 +13,6 @@ func (m Manifest) Generate() string {
     <manifest:file-entry manifest:full-path="/" manifest:media-type="application/vnd.oasis.opendocument.text"/>
     <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>
     <manifest:file-entry manifest:full-path="styles.xml" manifest:media-type="text/xml"/>
+	<manifest:file-entry manifest:full-path="meta.xml" manifest:media-type="text/xml"/>
 </manifest:manifest>`
 }

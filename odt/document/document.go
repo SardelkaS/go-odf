@@ -16,8 +16,8 @@ import (
 )
 
 type Document struct {
-	Meta     meta.Meta
-	Settings settings.Settings
+	Meta     *meta.Meta
+	settings settings.Settings
 	styles   styles.Styles
 	content  *content.Content
 	mimetype mimetype.MimeType
@@ -28,7 +28,7 @@ type Document struct {
 func New() Document {
 	return Document{
 		Meta:     meta.New(),
-		Settings: settings.New(),
+		settings: settings.New(),
 		styles:   styles.New(),
 		content:  content.New(),
 		mimetype: mimetype.New(),
@@ -67,7 +67,7 @@ func (d Document) GetBytes() (*bytes.Buffer, error) {
 	}(zipWriter)
 
 	files := map[string]string{
-		//_metaFileName:     d.Meta.Generate(),
+		_metaFileName: d.Meta.Generate(),
 		//_settingsFileName: d.Settings.Generate(),
 		_stylesFileName:   d.styles.Generate(),
 		_contentFileName:  d.content.Generate(),

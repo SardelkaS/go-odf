@@ -16,8 +16,8 @@ type Meta struct {
 	date           time.Time
 }
 
-func New() Meta {
-	return Meta{
+func New() *Meta {
+	return &Meta{
 		generator:      "MicrosoftOffice/15.0 MicrosoftWord",
 		title:          "",
 		description:    "",
@@ -30,47 +30,47 @@ func New() Meta {
 }
 
 // SetGenerator set generator metadata field
-func (m Meta) SetGenerator(g string) {
+func (m *Meta) SetGenerator(g string) {
 	m.generator = g
 }
 
 // SetTitle set title metadata field
-func (m Meta) SetTitle(t string) {
+func (m *Meta) SetTitle(t string) {
 	m.title = t
 }
 
 // SetDescription set description metadata field
-func (m Meta) SetDescription(d string) {
+func (m *Meta) SetDescription(d string) {
 	m.description = d
 }
 
 // SetSubject set subject metadata field
-func (m Meta) SetSubject(s string) {
+func (m *Meta) SetSubject(s string) {
 	m.subject = s
 }
 
 // SetInitialCreator set initial creator metadata field
-func (m Meta) SetInitialCreator(i string) {
+func (m *Meta) SetInitialCreator(i string) {
 	m.initialCreator = i
 }
 
 // SetCreator set creator metadata field
-func (m Meta) SetCreator(c string) {
+func (m *Meta) SetCreator(c string) {
 	m.creator = c
 }
 
 // SetCreationDate set creation date metadata field
-func (m Meta) SetCreationDate(c time.Time) {
+func (m *Meta) SetCreationDate(c time.Time) {
 	m.creationDate = c
 }
 
 // SetDate set date metadata field
-func (m Meta) SetDate(d time.Time) {
+func (m *Meta) SetDate(d time.Time) {
 	m.date = d
 }
 
 // Generate generates xml code
-func (m Meta) Generate() string {
+func (m *Meta) Generate() string {
 	return fmt.Sprintf(
 		`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <office:document-meta xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
