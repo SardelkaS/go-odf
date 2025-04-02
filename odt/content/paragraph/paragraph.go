@@ -9,23 +9,25 @@ import (
 
 // Paragraph represents a paragraph containing text elements
 type Paragraph struct {
-	Elements []*content_text.Text
+	elements []*content_text.Text
 }
 
 func New() *Paragraph {
 	return &Paragraph{
-		Elements: []*content_text.Text{},
+		elements: []*content_text.Text{},
 	}
 }
 
-func (p *Paragraph) AddText(text string, style style.Style) {
-	p.Elements = append(p.Elements, content_text.New(text, style))
+// AddText add text with its style to paragraph. All text in paragraph will be written in one line
+func (p *Paragraph) AddText(text string, style *style.Style) {
+	p.elements = append(p.elements, content_text.New(text, style))
 }
 
-func (p *Paragraph) GetStyles() string {
+// GenerateStyles generates XML representation of the paragraph styles
+func (p *Paragraph) GenerateStyles() string {
 	var stylesBuffer bytes.Buffer
-	for _, e := range p.Elements {
-		stylesBuffer.WriteString(e.Style.Generate())
+	for _, e := range p.elements {
+		stylesBuffer.WriteString(e.GetStyle().Generate())
 	}
 
 	return stylesBuffer.String()
@@ -36,7 +38,7 @@ func (p *Paragraph) Generate() string {
 	var builder strings.Builder
 	builder.WriteString(`<text:p text:style-name="P1">`)
 
-	for _, element := range p.Elements {
+	for _, element := range p.elements {
 		builder.WriteString(element.Generate())
 	}
 

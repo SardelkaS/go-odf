@@ -5,7 +5,7 @@ import (
 )
 
 type Element interface {
-	GetStyles() string
+	GenerateStyles() string
 	Generate() string
 }
 
@@ -40,7 +40,7 @@ func (c *Content) Generate() string {
         </style:style>`)
 
 	for _, e := range c.Elements {
-		contentBuffer.WriteString(e.GetStyles())
+		contentBuffer.WriteString(e.GenerateStyles())
 	}
 
 	contentBuffer.WriteString(`</office:automatic-styles>
