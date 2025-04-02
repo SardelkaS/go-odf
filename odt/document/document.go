@@ -4,8 +4,7 @@ import (
 	"archive/zip"
 	"bytes"
 	"github.com/SardelkaS/go-odf/odt/content"
-	"github.com/SardelkaS/go-odf/odt/content/style"
-	content_text "github.com/SardelkaS/go-odf/odt/content/text"
+	"github.com/SardelkaS/go-odf/odt/content/paragraph"
 	"github.com/SardelkaS/go-odf/odt/manifest"
 	"github.com/SardelkaS/go-odf/odt/meta"
 	"github.com/SardelkaS/go-odf/odt/mimetype"
@@ -37,9 +36,9 @@ func New() Document {
 	}
 }
 
-// Text add new text block with style
-func (d Document) Text(t string, s style.Style) {
-	d.content.Add(content_text.New(t, s))
+// Paragraph add new paragraph
+func (d Document) Paragraph(p *paragraph.Paragraph) {
+	d.content.Add(p)
 }
 
 // SaveToFile save generated data to file
@@ -68,12 +67,24 @@ func (d Document) GetBytes() (*bytes.Buffer, error) {
 	}(zipWriter)
 
 	files := map[string]string{
-		_metaFileName:     d.Meta.Generate(),
-		_settingsFileName: d.Settings.Generate(),
+		//_metaFileName:     d.Meta.Generate(),
+		//_settingsFileName: d.Settings.Generate(),
 		_stylesFileName:   d.styles.Generate(),
 		_contentFileName:  d.content.Generate(),
-		_mimeTypeFileName: d.mimetype.Generate(),
 		_manifestFileName: d.manifest.Generate(),
+	}
+
+	mimetypeHeader := &zip.FileHeader{
+		Name:   "mimetype",
+		Method: zip.Store, // No compression
+	}
+	mimetypeWriter, err := zipWriter.CreateHeader(mimetypeHeader)
+	if err != nil {
+		return nil, err
+	}
+	_, err = mimetypeWriter.Write([]byte(d.mimetype.Generate()))
+	if err != nil {
+		return nil, err
 	}
 
 	for file, data := range files {

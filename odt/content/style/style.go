@@ -2,19 +2,21 @@ package style
 
 import (
 	"fmt"
-	"github.com/SardelkaS/go-odf/odt/content/style/props"
-	"github.com/SardelkaS/go-odf/odt/content/style/types"
 	"strconv"
+	"strings"
 	"sync/atomic"
 )
 
 var nameIter = atomic.Uint64{}
 
 type Style struct {
-	name            string
-	parentStyleName string
-	family          types.Family
-	Props           props.Props
+	name      string
+	FontName  string
+	FontSize  string // e.g. "12pt", "1.5cm"
+	Bold      bool
+	Italic    bool
+	Underline bool
+	Color     string // hex color like "#000000"
 }
 
 // New creates new Style with default values
@@ -27,10 +29,7 @@ func New() Style {
 	}
 
 	return Style{
-		name:            fmt.Sprintf("P%s", strconv.FormatUint(iter, 10)),
-		parentStyleName: _defaultParentStyleName,
-		family:          types.Family_Paragraph,
-		Props:           props.New(),
+		name: fmt.Sprintf("T%s", strconv.FormatUint(iter, 10)),
 	}
 }
 
@@ -41,7 +40,30 @@ func (s Style) GetName() string {
 
 // Generate generates xml code
 func (s Style) Generate() string {
-	propsXml := s.Props.Generate()
-	return fmt.Sprintf(`<style:style style:name="%s" style:parent-style-name="%s" style:family="%s">%s</style:style>`,
-		s.name, s.parentStyleName, s.family, propsXml)
+	var builder strings.Builder
+
+	builder.WriteString(fmt.Sprintf(`<style:style style:name="%s" style:family="text">`, s.name))
+	builder.WriteString("<style:text-properties")
+
+	if s.FontName != "" {
+		builder.WriteString(fmt.Sprintf(` style:font-name="%s"`, s.FontName))
+	}
+	if s.FontSize != "" {
+		builder.WriteString(fmt.Sprintf(` fo:font-size="%s"`, s.FontSize))
+	}
+	if s.Bold {
+		builder.WriteString(` fo:font-weight="bold"`)
+	}
+	if s.Italic {
+		builder.WriteString(` fo:font-style="italic"`)
+	}
+	if s.Underline {
+		builder.WriteString(` style:text-underline-style="solid" style:text-underline-width="auto" style:text-underline-color="font-color"`)
+	}
+	if s.Color != "" {
+		builder.WriteString(fmt.Sprintf(` fo:color="%s"`, s.Color))
+	}
+
+	builder.WriteString("/></style:style>")
+	return builder.String()
 }

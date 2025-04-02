@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/SardelkaS/go-odf/odt/content/paragraph"
 	"github.com/SardelkaS/go-odf/odt/content/style"
-	"github.com/SardelkaS/go-odf/odt/content/style/types"
 	"github.com/SardelkaS/go-odf/odt/document"
 )
 
@@ -10,17 +10,26 @@ func main() {
 	odtFile := document.New()
 
 	style1 := style.New()
-	_ = style1.Props.Text.SetFontSize(20)
-	style1.Props.Text.SetFontName(types.FontName_LiberationSans)
-
-	odtFile.Text("Hello, world!", style1)
+	style1.FontSize = "20pt"
+	style1.Color = "#FF0000"
 
 	style2 := style.New()
-	_ = style2.Props.Text.SetFontSize(12)
-	style2.Props.Text.SetFontName(types.FontName_NSimSun)
+	style2.FontSize = "9pt"
+	style2.Bold = true
 
-	odtFile.Text("Hello world 1111", style1)
-	odtFile.Text("Nice to meet you", style2)
+	style3 := style.New()
+	style3.FontSize = "11pt"
+	style3.Underline = true
+
+	pr1 := paragraph.New()
+	pr1.AddText("Header", style1)
+
+	pr2 := paragraph.New()
+	pr2.AddText("some text 1", style2)
+	pr2.AddText("some test 2", style3)
+
+	odtFile.Paragraph(pr1)
+	odtFile.Paragraph(pr2)
 
 	err := odtFile.SaveToFile("./odt/examples/example1.odt")
 	if err != nil {
