@@ -2,19 +2,27 @@ package paragraph
 
 import (
 	"bytes"
+	"github.com/SardelkaS/go-odf/odt/content/paragraph/components"
+	"github.com/SardelkaS/go-odf/odt/content/paragraph/components/image"
+	"github.com/SardelkaS/go-odf/odt/content/paragraph/components/text"
 	"github.com/SardelkaS/go-odf/odt/content/style"
-	content_text "github.com/SardelkaS/go-odf/odt/content/text"
+	"github.com/SardelkaS/go-odf/odt/model"
 	"strings"
 )
 
+type element interface {
+	GetElementType() string
+	Generate() string
+}
+
 // Paragraph represents a paragraph containing text elements
 type Paragraph struct {
-	elements []*content_text.Text
+	elements []element
 }
 
 func New() *Paragraph {
 	return &Paragraph{
-		elements: []*content_text.Text{},
+		elements: []element{},
 	}
 }
 
@@ -23,14 +31,46 @@ func (p *Paragraph) AddText(text string, style *style.Style) {
 	p.elements = append(p.elements, content_text.New(text, style))
 }
 
+// AddImage add picture to paragraph
+func (p *Paragraph) AddImage(img *image.Image) {
+	p.elements = append(p.elements, img)
+}
+
 // GenerateStyles generates XML representation of the paragraph styles
 func (p *Paragraph) GenerateStyles() string {
 	var stylesBuffer bytes.Buffer
 	for _, e := range p.elements {
-		stylesBuffer.WriteString(e.GetStyle().Generate())
+		if e.GetElementType() == components.TextElement {
+			te, ok := e.(*content_text.Text)
+			if !ok {
+				continue
+			}
+
+			stylesBuffer.WriteString(te.GetStyle())
+		}
 	}
 
 	return stylesBuffer.String()
+}
+
+// GetFilesInfo returns information about additional files
+func (p *Paragraph) GetFilesInfo() []model.FileInfo {
+	var result []model.FileInfo
+	for _, e := range p.elements {
+		if e.GetElementType() == components.ImageElement {
+			ie, ok := e.(*image.Image)
+			if !ok {
+				continue
+			}
+
+			info := ie.GetFileInfo()
+			if info.Valid() {
+				result = append(result, info)
+			}
+		}
+	}
+
+	return result
 }
 
 // Generate generates XML representation of the paragraph

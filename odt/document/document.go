@@ -21,7 +21,7 @@ type Document struct {
 	styles   styles.Styles
 	content  *content.Content
 	mimetype mimetype.MimeType
-	manifest manifest.Manifest
+	manifest *manifest.Manifest
 }
 
 // New creates new empty Document
@@ -60,6 +60,9 @@ func (d Document) SaveToFile(filePath string) error {
 
 // GetBytes return generated file in bytes.Buffer
 func (d Document) GetBytes() (*bytes.Buffer, error) {
+	filesInfo := d.content.GetFilesInfo()
+	d.manifest.AddEntries(filesInfo)
+
 	buf := new(bytes.Buffer)
 	zipWriter := zip.NewWriter(buf)
 	defer func(zipWriter *zip.Writer) {
@@ -94,6 +97,18 @@ func (d Document) GetBytes() (*bytes.Buffer, error) {
 		}
 
 		_, err = io.WriteString(zipFile, data)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	for _, file := range filesInfo {
+		zipFile, err := zipWriter.Create(file.Path)
+		if err != nil {
+			return nil, err
+		}
+
+		_, err = zipFile.Write(file.Data)
 		if err != nil {
 			return nil, err
 		}

@@ -3,6 +3,7 @@ package content_text
 import (
 	"fmt"
 	"github.com/SardelkaS/go-odf/helpers"
+	"github.com/SardelkaS/go-odf/odt/content/paragraph/components"
 	"github.com/SardelkaS/go-odf/odt/content/style"
 )
 
@@ -28,9 +29,14 @@ func (t *Text) SetText(text string) {
 	t.text = text
 }
 
+// GetElementType returns element type
+func (t *Text) GetElementType() string {
+	return components.TextElement
+}
+
 // GetStyle returns Text style
-func (t *Text) GetStyle() *style.Style {
-	return t.style
+func (t *Text) GetStyle() string {
+	return t.style.Generate()
 }
 
 // Generate generates xml code

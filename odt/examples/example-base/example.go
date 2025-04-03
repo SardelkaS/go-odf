@@ -32,7 +32,7 @@ func main() {
 	odtFile.Meta.SetDescription("just test odt file")
 
 	// save generated file
-	err := odtFile.SaveToFile("./odt/examples/example1.odt")
+	err := odtFile.SaveToFile("./odt/examples/example-base/example.odt")
 	if err != nil {
 		panic(err)
 	}
