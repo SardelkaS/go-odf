@@ -15,7 +15,6 @@ func main() {
 	// create styles
 	style1 := style.New().WithFontSize("30pt").WithBold()
 	style2 := style.New().WithFontSize("25pt").WithBold()
-	style3 := style.New().WithFontSize("20pt")
 
 	// load images from files
 	data, err := os.ReadFile("./odt/examples/example-image/1.jpg")
@@ -42,6 +41,7 @@ func main() {
 	}
 	img2.SetHeight("8cm")
 	img2.SetWidth("300px")
+	img2.SetAltText("Some image name")
 
 	// add paragraphs
 	pr := paragraph.New()
@@ -50,14 +50,6 @@ func main() {
 
 	pr = paragraph.New()
 	pr.AddImage(img1)
-	odtFile.Paragraph(pr)
-
-	pr = paragraph.New()
-	pr.AddText("some text", style3)
-	odtFile.Paragraph(pr)
-
-	pr = paragraph.New()
-	pr.AddText("some text", style3)
 	odtFile.Paragraph(pr)
 
 	pr = paragraph.New()

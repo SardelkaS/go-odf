@@ -12,6 +12,7 @@ import (
 
 type element interface {
 	GetElementType() string
+	GetStyle() string
 	Generate() string
 }
 
@@ -40,14 +41,7 @@ func (p *Paragraph) AddImage(img *image.Image) {
 func (p *Paragraph) GenerateStyles() string {
 	var stylesBuffer bytes.Buffer
 	for _, e := range p.elements {
-		if e.GetElementType() == components.TextElement {
-			te, ok := e.(*content_text.Text)
-			if !ok {
-				continue
-			}
-
-			stylesBuffer.WriteString(te.GetStyle())
-		}
+		stylesBuffer.WriteString(e.GetStyle())
 	}
 
 	return stylesBuffer.String()
