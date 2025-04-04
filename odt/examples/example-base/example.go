@@ -15,15 +15,14 @@ func main() {
 	style3 := style.New().WithFontSize("17pt").WithUnderline()
 
 	// add paragraph with text
-	pr1 := paragraph.New()
-	pr1.AddText("Header", style1)
+	pr := paragraph.New()
+	pr.AddText("Header", style1)
+	odtFile.Paragraph(pr)
 
-	pr2 := paragraph.New()
-	pr2.AddText("Some text 1.", style2)
-	pr2.AddText("Some text 2.", style3)
-
-	odtFile.Paragraph(pr1)
-	odtFile.Paragraph(pr2)
+	// you can use setters for create paragraph
+	odtFile.Paragraph(paragraph.New().
+		WithText("Some text 1.", style2).
+		WithText("Some text 2.", style3))
 
 	// change metadata
 	odtFile.Meta.SetInitialCreator("Hi it's me")

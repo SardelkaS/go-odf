@@ -32,9 +32,21 @@ func (p *Paragraph) AddText(text string, style *style.Style) {
 	p.elements = append(p.elements, content_text.New(text, style))
 }
 
+// WithText setter analog of AddText
+func (p *Paragraph) WithText(text string, style *style.Style) *Paragraph {
+	p.AddText(text, style)
+	return p
+}
+
 // AddImage add picture to paragraph
 func (p *Paragraph) AddImage(img *image.Image) {
 	p.elements = append(p.elements, img)
+}
+
+// WithImage setter analog of AddImage
+func (p *Paragraph) WithImage(img *image.Image) *Paragraph {
+	p.AddImage(img)
+	return p
 }
 
 // GenerateStyles generates XML representation of the paragraph styles
