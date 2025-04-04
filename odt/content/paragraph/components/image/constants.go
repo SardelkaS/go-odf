@@ -32,3 +32,7 @@ const (
 	WrapSideBiggest = "biggest" // Automatic side selection
 	WrapSideBoth    = "both"    // Wrap on both sides
 )
+
+const (
+	_defaultCaptionStyleName = "Caption"
+)

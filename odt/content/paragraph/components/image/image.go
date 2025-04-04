@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/SardelkaS/go-odf/odt/content/paragraph/components"
+	"github.com/SardelkaS/go-odf/odt/content/style"
 	"github.com/SardelkaS/go-odf/odt/model"
 	"strconv"
 	"strings"
@@ -32,7 +33,8 @@ type Image struct {
 	src              string
 	width            string
 	height           string
-	altText          string
+	caption          string
+	captionStyle     *style.Style
 	contentType      string
 
 	// Positioning configuration
@@ -82,7 +84,7 @@ func New(data string) (*Image, error) {
 		src:              data,
 		width:            _defaultWidth,
 		height:           _defaultHeight,
-		altText:          "",
+		caption:          "",
 		contentType:      contentType,
 		position: position{
 			Type:   PositionTypeParagraph,
@@ -104,9 +106,14 @@ func (i *Image) SetHeight(h string) {
 	i.height = h
 }
 
-// SetAltText set alternative text for picture
-func (i *Image) SetAltText(at string) {
-	i.altText = at
+// SetCaption set caption text for picture
+func (i *Image) SetCaption(at string) {
+	i.caption = at
+}
+
+// SetCaptionStyle set caption text style
+func (i *Image) SetCaptionStyle(s *style.Style) {
+	i.captionStyle = s
 }
 
 // SetContentType set MIME-type of picture. It is determined automatically. Use this only if you are sure
@@ -186,7 +193,15 @@ func (i *Image) GetFileInfo() model.FileInfo {
 }
 
 func (i *Image) getCaptionStyle() string {
-	if i.altText == "" {
+	if i.captionStyle == nil {
+		return ""
+	}
+
+	return i.captionStyle.Generate()
+}
+
+func (i *Image) getCaptionFrameStyle() string {
+	if i.caption == "" {
 		return ""
 	}
 
@@ -239,6 +254,7 @@ func (i *Image) GetStyle() string {
 	}
 
 	builder.WriteString(`/></style:style>`)
+	builder.WriteString(" " + i.getCaptionFrameStyle())
 	builder.WriteString(" " + i.getCaptionStyle())
 	return builder.String()
 }
@@ -247,12 +263,18 @@ func (i *Image) GetStyle() string {
 func (i *Image) Generate() string {
 	info := i.GetFileInfo()
 
-	if i.altText != "" {
+	if i.caption != "" {
+		caption := i.caption
+		if i.captionStyle != nil {
+			caption = fmt.Sprintf(`<text:span text:style-name="%s">%s</text:span>`,
+				i.captionStyle.GetName(), i.caption)
+		}
+
 		return fmt.Sprintf(
 			`<draw:frame draw:style-name="%s" draw:name="%s" text:anchor-type="paragraph" svg:width="%s" svg:height="%s" draw:z-index="0">
 					<draw:text-box fo:min-height="7.999cm">
                         <text:p text:style-name="Caption">
-                            <draw:frame draw:style-name="%s"
+                            <draw:frame draw:style-name="Caption"
                                 draw:name="Image2" text:anchor-type="paragraph" svg:width="7.938cm"
                                 style:rel-width="100%%" svg:height="7.999cm" style:rel-height="scale"
                                 draw:z-index="2">
@@ -262,7 +284,7 @@ func (i *Image) Generate() string {
                         </text:p>
                     </draw:text-box>
         </draw:frame>`,
-			i.styleName, i.name, i.width, i.height, i.captionStyleName, info.Path, i.altText)
+			i.styleName, i.name, i.width, i.height, info.Path, caption)
 	}
 
 	return fmt.Sprintf(

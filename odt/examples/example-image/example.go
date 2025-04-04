@@ -15,6 +15,7 @@ func main() {
 	// create styles
 	style1 := style.New().WithFontSize("30pt").WithBold()
 	style2 := style.New().WithFontSize("25pt").WithBold()
+	captionStyle := style.New().WithFontSize("20pt").WithUnderline().WithBold()
 
 	// load images from files
 	data, err := os.ReadFile("./odt/examples/example-image/1.jpg")
@@ -41,7 +42,8 @@ func main() {
 	}
 	img2.SetHeight("8cm")
 	img2.SetWidth("300px")
-	img2.SetAltText("Some image name")
+	img2.SetCaption("Some image name")
+	img2.SetCaptionStyle(captionStyle)
 
 	// add paragraphs
 	pr := paragraph.New()
