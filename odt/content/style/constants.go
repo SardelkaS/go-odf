@@ -1,6 +1,4 @@
-package types
-
-type FontName string
+package style
 
 const (
 	// Base
@@ -99,4 +97,100 @@ const (
 	FontName_NimbusMono      = "Nimbus Mono"
 
 	FontName_UNDEFINED = "UNDEFINED"
+)
+
+// Underline styles
+const (
+	UnderlineNone       = "none"         // No underline
+	UnderlineSingle     = "solid"        // Single solid line
+	UnderlineDouble     = "double"       // Double solid line
+	UnderlineDotted     = "dotted"       // Dotted line
+	UnderlineDash       = "dash"         // Dashed line
+	UnderlineWave       = "wave"         // Wavy line
+	UnderlineBold       = "bold"         // Thick solid line
+	UnderlineDotDash    = "dot-dash"     // Alternating dots and dashes
+	UnderlineDotDotDash = "dot-dot-dash" // Two dots followed by a dash
+	UnderlineLongDash   = "long-dash"    // Longer dashes
+)
+
+// Overline styles (similar to underline but above text)
+const (
+	OverlineNone   = "none"   // No overline
+	OverlineSingle = "solid"  // Single solid line
+	OverlineDouble = "double" // Double solid line
+	OverlineDotted = "dotted" // Dotted line
+	OverlineDash   = "dash"   // Dashed line
+	OverlineWave   = "wave"   // Wavy line
+)
+
+// Line-through (strikethrough) styles
+const (
+	LineThroughNone  = "none"  // No line through text
+	LineThroughSolid = "solid" // Single solid line
+	LineThroughWave  = "wave"  // Wavy line
+	LineThroughSlash = "slash" // Diagonal slash
+	LineThroughX     = "x"     // X-shaped
+)
+
+// Text transformation options
+const (
+	TransformNone       = "none"       // No transformation
+	TransformUppercase  = "uppercase"  // ALL UPPERCASE
+	TransformLowercase  = "lowercase"  // all lowercase
+	TransformCapitalize = "capitalize" // Capitalize Each Word
+	TransformSmallCaps  = "small-caps" // Small Caps
+)
+
+// Text rotation scaling options
+const (
+	RotationScaleFixed      = "fixed"       // Line height remains unchanged
+	RotationScaleLineHeight = "line-height" // Line height adjusts to fit rotated text
+)
+
+// Writing modes (text directions)
+const (
+	WritingModeLR_TB = "lr-tb" // Left-to-right, top-to-bottom (Western)
+	WritingModeRL_TB = "rl-tb" // Right-to-left, top-to-bottom (Hebrew/Arabic)
+	WritingModeTB_RL = "tb-rl" // Top-to-bottom, right-to-left (Asian vertical)
+	WritingModeTB_LR = "tb-lr" // Top-to-bottom, left-to-right (Mongolian)
+	WritingModePage  = "page"  // Follows page text direction
+)
+
+// Text emphasis marks (primarily for East Asian typography)
+const (
+	EmphasisNone         = "none"
+	EmphasisDot          = "dot"
+	EmphasisCircle       = "circle"
+	EmphasisDisc         = "disc"
+	EmphasisAccent       = "accent"
+	EmphasisFilledDot    = "filled dot"
+	EmphasisFilledCircle = "filled circle"
+	EmphasisFilledDisc   = "filled disc"
+	EmphasisFilledAccent = "filled accent"
+	EmphasisAbove        = "above"
+	EmphasisBelow        = "below"
+	EmphasisLeft         = "left"
+	EmphasisRight        = "right"
+)
+
+// Font weights
+const (
+	FontWeightNormal = "normal" // Regular weight
+	FontWeightBold   = "bold"   // Bold weight
+	FontWeight100    = "100"    // Thin
+	FontWeight200    = "200"    // Extra Light
+	FontWeight300    = "300"    // Light
+	FontWeight400    = "400"    // Normal (same as 'normal')
+	FontWeight500    = "500"    // Medium
+	FontWeight600    = "600"    // Semi Bold
+	FontWeight700    = "700"    // Bold (same as 'bold')
+	FontWeight800    = "800"    // Extra Bold
+	FontWeight900    = "900"    // Black
+)
+
+// Font styles
+const (
+	FontStyleNormal  = "normal"  // Upright characters
+	FontStyleItalic  = "italic"  // Italic characters
+	FontStyleOblique = "oblique" // Slanted characters
 )
