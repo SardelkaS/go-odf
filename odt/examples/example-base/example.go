@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/SardelkaS/go-odf/odt/content/paragraph"
-	"github.com/SardelkaS/go-odf/odt/content/style"
+	"github.com/SardelkaS/go-odf/odt/content/paragraph/components/text/style"
 	"github.com/SardelkaS/go-odf/odt/document"
 )
 

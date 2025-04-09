@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/SardelkaS/go-odf/helpers"
 	"github.com/SardelkaS/go-odf/odt/content/paragraph/components"
-	"github.com/SardelkaS/go-odf/odt/content/style"
+	"github.com/SardelkaS/go-odf/odt/content/paragraph/components/text/style"
 )
 
 // Text simple text with style

@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"github.com/SardelkaS/go-odf/odt/content"
 	"github.com/SardelkaS/go-odf/odt/content/paragraph"
+	"github.com/SardelkaS/go-odf/odt/content/table"
 	"github.com/SardelkaS/go-odf/odt/manifest"
 	"github.com/SardelkaS/go-odf/odt/meta"
 	"github.com/SardelkaS/go-odf/odt/mimetype"
@@ -39,6 +40,11 @@ func New() Document {
 // Paragraph add new paragraph
 func (d Document) Paragraph(p *paragraph.Paragraph) {
 	d.content.Add(p)
+}
+
+// Table add new table
+func (d Document) Table(t *table.Table) {
+	d.content.Add(t)
 }
 
 // SaveToFile save generated data to file

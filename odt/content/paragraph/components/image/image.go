@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/SardelkaS/go-odf/odt/content/paragraph/components"
-	"github.com/SardelkaS/go-odf/odt/content/style"
+	"github.com/SardelkaS/go-odf/odt/content/paragraph/components/text/style"
 	"github.com/SardelkaS/go-odf/odt/model"
 	"strconv"
 	"strings"

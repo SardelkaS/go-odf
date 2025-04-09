@@ -5,7 +5,7 @@ import (
 	"github.com/SardelkaS/go-odf/odt/content/paragraph/components"
 	"github.com/SardelkaS/go-odf/odt/content/paragraph/components/image"
 	"github.com/SardelkaS/go-odf/odt/content/paragraph/components/text"
-	"github.com/SardelkaS/go-odf/odt/content/style"
+	"github.com/SardelkaS/go-odf/odt/content/paragraph/components/text/style"
 	"github.com/SardelkaS/go-odf/odt/model"
 	"strings"
 )
