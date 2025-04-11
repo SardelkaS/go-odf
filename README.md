@@ -22,19 +22,17 @@ go get github.com/SardelkaS/go-odf
 package main
 
 import (
-	"github.com/SardelkaS/go-odf/odt/content/paragraph"
-	"github.com/SardelkaS/go-odf/odt/content/paragraph/components/text/style"
-	"github.com/SardelkaS/go-odf/odt/document"
+	"github.com/SardelkaS/go-odf/odt"
 )
 
 func main() {
-	odtFile := document.New()
+	odtFile := odt.New()
 	
 	// create style
-	style1 := style.New().WithFontSize("30pt").WithColor("#FF0000")
+	style1 := odt.NewTextStyle().WithFontSize("30pt").WithColor("#FF0000")
 
 	// add paragraph with text
-	pr := paragraph.New()
+	pr := odt.NewParagraph()
 	pr.AddText("Header", style1)
 	odtFile.Paragraph(pr)
 
@@ -47,4 +45,4 @@ func main() {
 ```  
 
 ## **Usage Examples**
-See the [examples directory](https://github.com/SardelkaS/go-odf/tree/main/odt/examples) for practical implementations.
+See the [examples directory](https://github.com/SardelkaS/go-odf/tree/main/examples/odt) for practical implementations.
