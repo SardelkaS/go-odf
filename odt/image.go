@@ -3,7 +3,6 @@ package odt
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/SardelkaS/go-odf/odt/constants"
 	"strconv"
 	"strings"
 	"sync/atomic"
@@ -85,11 +84,11 @@ func NewImage(data string) (*Image, error) {
 		caption:          "",
 		contentType:      contentType,
 		position: position{
-			Type:   constants.PositionTypeParagraph,
-			Anchor: constants.PositionTypeParagraph,
+			Type:   PositionTypeParagraph,
+			Anchor: PositionTypeParagraph,
 		},
 		textWrap: textWrap{
-			Type: constants.WrapNone,
+			Type: WrapNone,
 		},
 	}, nil
 }
@@ -216,8 +215,8 @@ func (i *Image) getCaptionFrameStyle() string {
         </style:style>`, i.captionStyleName)
 }
 
-// getStyle returns image style
-func (i *Image) getStyle() string {
+// generateStyles returns image style
+func (i *Image) generateStyles() string {
 	var builder strings.Builder
 	builder.WriteString(`<style:style style:name="` + i.styleName + `" style:family="graphic" `)
 	builder.WriteString(`style:parent-style-name="Graphics">`)

@@ -2,7 +2,6 @@ package odt
 
 import (
 	"fmt"
-	"github.com/SardelkaS/go-odf/odt/constants"
 	"strconv"
 	"strings"
 	"sync/atomic"
@@ -32,6 +31,7 @@ type Style struct {
 	writingMode          string // Text direction (e.g., "lr-tb", "tb-rl")
 	textRotationAngle    int64  // Rotation angle (0-360 degrees)
 	textRotationScale    string // How rotation affects line height
+	listRef              string
 }
 
 // NewTextStyle creates new Style with default values
@@ -46,6 +46,24 @@ func NewTextStyle() *Style {
 	return &Style{
 		name: fmt.Sprintf("T%s", strconv.FormatUint(iter, 10)),
 	}
+}
+
+func (s *Style) copy() *Style {
+	iter := tsNameIter.Load()
+	tsNameIter.Add(1)
+	if iter == 0 {
+		iter = 2
+		tsNameIter.Add(2)
+	}
+
+	newStyle := *s
+	newStyle.name = fmt.Sprintf("T%s", strconv.FormatUint(iter, 10))
+	return &newStyle
+}
+
+func (s *Style) withListRef(ref string) *Style {
+	s.listRef = ref
+	return s
 }
 
 // WithFontName set FontName. FontName specifies the font family (e.g., "Arial", "Times NewTextStyle Roman")
@@ -114,7 +132,7 @@ func (s *Style) WithTextTransform(transform string) *Style {
 
 // WithUnderline enables text underlining
 func (s *Style) WithUnderline() *Style {
-	s.textUnderlineStyle = constants.UnderlineSingle
+	s.textUnderlineStyle = UnderlineSingle
 	s.textUnderlineColor = "font-color"
 	return s
 }
@@ -205,7 +223,16 @@ func (s *Style) getName() string {
 func (s *Style) generate() string {
 	var builder strings.Builder
 
-	builder.WriteString(fmt.Sprintf(`<style:style style:name="%s" style:family="text">`, s.name))
+	builder.WriteString(fmt.Sprintf(`<style:style style:name="%s"`, s.name))
+
+	if s.listRef != "" {
+		builder.WriteString(fmt.Sprintf(` style:family="paragraph" style:list-style-name="%s"`, s.listRef))
+	} else {
+		builder.WriteString(` style:family="text"`)
+	}
+
+	builder.WriteString(`>`)
+
 	builder.WriteString("<style:text-properties")
 
 	if s.fontName != "" {

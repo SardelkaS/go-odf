@@ -29,14 +29,19 @@ func New() Document {
 	}
 }
 
-// Paragraph add new Paragraph
+// Paragraph adds new Paragraph
 func (d Document) Paragraph(p *Paragraph) {
 	d.content.add(p)
 }
 
-// Table add new table
+// Table adds new table
 func (d Document) Table(t *Table) {
 	d.content.add(t)
+}
+
+// List adds new list
+func (d Document) List(l *List) {
+	d.content.add(l)
 }
 
 // SaveToFile save generated data to file

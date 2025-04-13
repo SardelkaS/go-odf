@@ -7,7 +7,7 @@ import (
 
 type pElement interface {
 	getElementType() string
-	getStyle() string
+	generateStyles() string
 	generate() string
 }
 
@@ -48,7 +48,7 @@ func (p *Paragraph) WithImage(img *Image) *Paragraph {
 func (p *Paragraph) generateStyles() string {
 	var stylesBuffer bytes.Buffer
 	for _, e := range p.elements {
-		stylesBuffer.WriteString(e.getStyle())
+		stylesBuffer.WriteString(e.generateStyles())
 	}
 
 	return stylesBuffer.String()

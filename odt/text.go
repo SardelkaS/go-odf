@@ -9,6 +9,7 @@ import (
 type text struct {
 	style *Style
 	text  string
+	tag   string
 }
 
 // newText creates new text block
@@ -18,7 +19,13 @@ func newText(t string, style *Style) *text {
 	return &text{
 		style: style,
 		text:  t,
+		tag:   _textTagSpan,
 	}
+}
+
+func (t *text) withTag(tag string) *text {
+	t.tag = tag
+	return t
 }
 
 // setText set text content. Content contains the actual text to be displayed
@@ -32,13 +39,13 @@ func (t *text) getElementType() string {
 	return _textElement
 }
 
-// getStyle returns text style
-func (t *text) getStyle() string {
+// generateStyles returns text style
+func (t *text) generateStyles() string {
 	return t.style.generate()
 }
 
 // generate generates xml code
 func (t *text) generate() string {
-	return fmt.Sprintf(`<text:span text:style-name="%s">%s</text:span>`,
-		t.style.getName(), helpers.EscapeXML(t.text))
+	return fmt.Sprintf(`<text:%s text:style-name="%s">%s</text:%s>`,
+		t.tag, t.style.getName(), helpers.EscapeXML(t.text), t.tag)
 }
