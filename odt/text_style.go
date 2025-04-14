@@ -32,6 +32,7 @@ type Style struct {
 	textRotationAngle    int64  // Rotation angle (0-360 degrees)
 	textRotationScale    string // How rotation affects line height
 	listRef              string
+	parentStyleName      string
 }
 
 // NewTextStyle creates new Style with default values
@@ -66,7 +67,13 @@ func (s *Style) withListRef(ref string) *Style {
 	return s
 }
 
-// WithFontName set FontName. FontName specifies the font family (e.g., "Arial", "Times NewTextStyle Roman")
+// WithParentStyle set parent style name
+func (s *Style) WithParentStyle(ps *Style) *Style {
+	s.parentStyleName = ps.getName()
+	return s
+}
+
+// WithFontName set FontName. FontName specifies the font family (e.g., "Arial", "Times New Roman")
 func (s *Style) WithFontName(fontName string) *Style {
 	s.fontName = fontName
 	return s
@@ -229,6 +236,10 @@ func (s *Style) generate() string {
 		builder.WriteString(fmt.Sprintf(` style:family="paragraph" style:list-style-name="%s"`, s.listRef))
 	} else {
 		builder.WriteString(` style:family="text"`)
+	}
+
+	if s.parentStyleName != "" {
+		builder.WriteString(fmt.Sprintf(` style:parent-style-name="%s"`, s.parentStyleName))
 	}
 
 	builder.WriteString(`>`)
