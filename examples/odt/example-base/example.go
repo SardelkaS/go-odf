@@ -12,9 +12,12 @@ func main() {
 	style2 := odt.NewTextStyle().WithFontSize("14pt").WithBold()
 	style3 := odt.NewTextStyle().WithFontSize("17pt").WithUnderline()
 
+	// add header
+	odtFile.Header("Header", style1, 1)
+
 	// add paragraph with text
 	pr := odt.NewParagraph()
-	pr.AddText("Header", style1)
+	pr.AddText("Some text", style2)
 	odtFile.Paragraph(pr)
 
 	// you can use setters for create paragraph

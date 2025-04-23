@@ -33,6 +33,8 @@ type Style struct {
 	textRotationScale    string // How rotation affects line height
 	listRef              string
 	parentStyleName      string
+	isHeaderStyle        bool
+	displayName          string
 }
 
 // NewTextStyle creates new Style with default values
@@ -64,6 +66,11 @@ func (s *Style) copy() *Style {
 
 func (s *Style) withListRef(ref string) *Style {
 	s.listRef = ref
+	return s
+}
+
+func (s *Style) asHeaderStyle() *Style {
+	s.isHeaderStyle = true
 	return s
 }
 
@@ -221,6 +228,13 @@ func (s *Style) WithRotation(angle int64, scale string) *Style {
 	return s
 }
 
+// withDisplayName sets style display name.
+// Must be any unique string.
+func (s *Style) withDisplayName(name string) *Style {
+	s.displayName = name
+	return s
+}
+
 // getName returns style name
 func (s *Style) getName() string {
 	return s.name
@@ -232,8 +246,14 @@ func (s *Style) generate() string {
 
 	builder.WriteString(fmt.Sprintf(`<style:style style:name="%s"`, s.name))
 
+	if s.displayName != "" {
+		builder.WriteString(fmt.Sprintf(` style:display-name="%s"`, s.displayName))
+	}
+
 	if s.listRef != "" {
 		builder.WriteString(fmt.Sprintf(` style:family="paragraph" style:list-style-name="%s"`, s.listRef))
+	} else if s.isHeaderStyle {
+		builder.WriteString(` style:family="paragraph"`)
 	} else {
 		builder.WriteString(` style:family="text"`)
 	}

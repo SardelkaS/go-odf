@@ -44,6 +44,11 @@ func (d Document) List(l *List) {
 	d.content.add(l)
 }
 
+// Header adds new header
+func (d Document) Header(t string, style *Style, level int64) {
+	d.content.add(newHeader(t, style, level))
+}
+
 // SaveToFile save generated data to file
 //
 // example SaveToFile("./files/test.odt")
