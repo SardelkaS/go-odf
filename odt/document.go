@@ -11,7 +11,7 @@ import (
 type Document struct {
 	Meta     *meta
 	settings settings
-	styles   styles
+	styles   *styles
 	content  *content
 	mimetype mimeType
 	manifest *manifest
@@ -47,6 +47,11 @@ func (d Document) List(l *List) {
 // Header adds new header
 func (d Document) Header(t string, style *Style, level int64) {
 	d.content.add(newHeader(t, style, level))
+}
+
+// PageStyle sets page style
+func (d Document) PageStyle(ps *PageStyle) {
+	d.styles.pageStyle = ps
 }
 
 // SaveToFile save generated data to file
