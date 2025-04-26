@@ -44,6 +44,17 @@ func (p *Paragraph) WithImage(img *Image) *Paragraph {
 	return p
 }
 
+// AddHyperlink add hyperlink to Paragraph
+func (p *Paragraph) AddHyperlink(h *Hyperlink) {
+	p.elements = append(p.elements, h)
+}
+
+// WithHyperlink setter analog of AddHyperlink
+func (p *Paragraph) WithHyperlink(h *Hyperlink) *Paragraph {
+	p.AddHyperlink(h)
+	return p
+}
+
 // generateStyles generates XML representation of the Paragraph styles
 func (p *Paragraph) generateStyles() string {
 	var stylesBuffer bytes.Buffer

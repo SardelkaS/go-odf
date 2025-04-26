@@ -13,6 +13,7 @@ const (
 const (
 	_textElement  = "text"
 	_imageElement = "image"
+	_linkElement  = "link"
 )
 
 // image
