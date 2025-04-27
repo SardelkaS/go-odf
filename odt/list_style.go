@@ -3,7 +3,6 @@ package odt
 import (
 	"bytes"
 	"fmt"
-	"github.com/SardelkaS/go-odf/helpers"
 	"strconv"
 	"sync/atomic"
 )
@@ -90,7 +89,7 @@ func (ls *listStyle) generate() string {
 			buf.WriteString(`"`)
 
 			buf.WriteString(` text:bullet-char="`)
-			buf.WriteString(helpers.EscapeXML(level.bulletChar))
+			buf.WriteString(escapeXML(level.bulletChar))
 			buf.WriteString(`"`)
 
 			buf.WriteString(`>`)
@@ -114,13 +113,13 @@ func (ls *listStyle) generate() string {
 
 			if level.prefix != "" {
 				buf.WriteString(` style:num-prefix="`)
-				buf.WriteString(helpers.EscapeXML(level.prefix))
+				buf.WriteString(escapeXML(level.prefix))
 				buf.WriteString(`"`)
 			}
 
 			if level.suffix != "" {
 				buf.WriteString(` style:num-suffix="`)
-				buf.WriteString(helpers.EscapeXML(level.suffix))
+				buf.WriteString(escapeXML(level.suffix))
 				buf.WriteString(`"`)
 			}
 

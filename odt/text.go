@@ -2,7 +2,6 @@ package odt
 
 import (
 	"fmt"
-	"github.com/SardelkaS/go-odf/helpers"
 )
 
 // text simple text with style
@@ -47,5 +46,5 @@ func (t *text) generateStyles() string {
 // generate generates xml code
 func (t *text) generate() string {
 	return fmt.Sprintf(`<text:%s text:style-name="%s">%s</text:%s>`,
-		t.tag, t.style.getName(), helpers.EscapeXML(t.text), t.tag)
+		t.tag, t.style.getName(), escapeXML(t.text), t.tag)
 }

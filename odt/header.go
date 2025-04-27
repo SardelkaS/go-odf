@@ -47,8 +47,6 @@ func (h *header) generateStyles() string {
 
 // generate generates xml code
 func (h *header) generate() string {
-	return fmt.Sprintf(`<text:h text:style-name="%s" text:outline-level="%s"><text:bookmark-start
-                    text:name="%s" />%s<text:bookmark-end
-                    text:name="%s" /></text:h>`,
+	return fmt.Sprintf(`<text:h text:style-name="%s" text:outline-level="%s"><text:bookmark-start text:name="%s" />%s<text:bookmark-end text:name="%s" /></text:h>`,
 		h.style.getName(), strconv.FormatInt(h.level, 10), h.ref, h.text, h.ref)
 }

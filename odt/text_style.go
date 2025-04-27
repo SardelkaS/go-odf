@@ -138,7 +138,7 @@ func (s *Style) WithLetterSpacing(spacing string) *Style {
 // TransformLowercase, or TransformCapitalize.
 // Example:
 //
-//	style.WithTextTransform(types.TransformUppercase)
+//	style.WithTextTransform(TransformUppercase)
 func (s *Style) WithTextTransform(transform string) *Style {
 	s.textTransform = transform
 	return s
