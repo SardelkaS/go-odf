@@ -16,7 +16,11 @@ func main() {
 	style2 := odt.NewTextStyle().WithFontSize("14pt").WithBold()
 
 	// add header
-	odtFile.Header("Header", style1, 1)
+	odtFile.Header(
+		odt.NewHeader().
+			WithText("Header").
+			WithLevel(1).
+			WithStyle(style1))
 
 	// add paragraph with text
 	pr := odt.NewParagraph()

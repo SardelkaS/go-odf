@@ -303,3 +303,11 @@ const (
 	BulletStyleCircle     string = "○" // Hollow circle
 	BulletStyleSquare     string = "■" // Filled square
 )
+
+// Heading
+const (
+	_sectStyleName    = "Sect1"
+	_sectStyle        = `<style:style style:name="Sect1" style:family="section"><style:section-properties style:editable="false"><style:columns fo:column-count="1" fo:column-gap="0cm" /></style:section-properties></style:style>`
+	_index20StyleName = "Index_20_Link"
+	_index20Style     = `<style:style style:name="Index_20_Link" style:display-name="Index Link" style:family="text" />`
+)

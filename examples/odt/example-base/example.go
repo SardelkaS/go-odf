@@ -15,7 +15,11 @@ func main() {
 	styleLinkVisited := odt.NewTextStyle().WithFontSize("14pt").WithUnderline().WithColor("#1221FC")
 
 	// add header
-	odtFile.Header("Header", style1, 1)
+	odtFile.Header(
+		odt.NewHeader().
+			WithText("Header").
+			WithLevel(1).
+			WithStyle(style1))
 
 	// add paragraph with text
 	pr := odt.NewParagraph()

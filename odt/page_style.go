@@ -133,8 +133,8 @@ func (ps *PageStyle) SetBackgroundColor(color string) {
 	ps.backgroundColor = color
 }
 
-// SetHeaderDistance sets the distance from page top to header content.
-// Value in CSS units. Affects header positioning.
+// SetHeaderDistance sets the distance from page top to Header content.
+// Value in CSS units. Affects Header positioning.
 func (ps *PageStyle) SetHeaderDistance(distance string) {
 	ps.headerFooter.headerDistance = distance
 }
@@ -198,8 +198,8 @@ func (ps *PageStyle) generate() string {
 
 	buf.WriteString(`>`)
 
-	buf.WriteString(fmt.Sprintf(`<style:header-style><style:header-footer-properties fo:min-height="0.5cm" fo:margin-left="0cm" fo:margin-right="0cm" fo:margin-bottom="%s"/></style:header-style>`, ps.headerFooter.headerDistance))
-	buf.WriteString(fmt.Sprintf(`<style:footer-style><style:header-footer-properties fo:min-height="0.5cm" fo:margin-left="0cm" fo:margin-right="0cm" fo:margin-top="%s"/></style:footer-style>`, ps.headerFooter.footerDistance))
+	buf.WriteString(fmt.Sprintf(`<style:Header-style><style:Header-footer-properties fo:min-height="0.5cm" fo:margin-left="0cm" fo:margin-right="0cm" fo:margin-bottom="%s"/></style:Header-style>`, ps.headerFooter.headerDistance))
+	buf.WriteString(fmt.Sprintf(`<style:footer-style><style:Header-footer-properties fo:min-height="0.5cm" fo:margin-left="0cm" fo:margin-right="0cm" fo:margin-top="%s"/></style:footer-style>`, ps.headerFooter.footerDistance))
 
 	buf.WriteString(`</style:page-layout-properties>`)
 	buf.WriteString(`</style:page-layout>`)

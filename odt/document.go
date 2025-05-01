@@ -34,19 +34,24 @@ func (d Document) Paragraph(p *Paragraph) {
 	d.content.add(p)
 }
 
-// Table adds new table
+// Table adds new Table
 func (d Document) Table(t *Table) {
 	d.content.add(t)
 }
 
-// List adds new list
+// List adds new List
 func (d Document) List(l *List) {
 	d.content.add(l)
 }
 
-// Header adds new header
-func (d Document) Header(t string, style *Style, level int64) {
-	d.content.add(newHeader(t, style, level))
+// Header adds new Header
+func (d Document) Header(h *Header) {
+	d.content.add(h)
+}
+
+// Heading adds new Heading
+func (d Document) Heading(h *Heading) {
+	d.content.add(h)
 }
 
 // PageStyle sets page style

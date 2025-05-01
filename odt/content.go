@@ -81,6 +81,8 @@ func (c *content) generate() string {
 	for _, e := range c.elements {
 		contentBuffer.WriteString(e.generateStyles())
 	}
+	contentBuffer.WriteString(_sectStyle)
+	contentBuffer.WriteString(_index20Style)
 
 	contentBuffer.WriteString(`</office:automatic-styles>
     <office:body>
