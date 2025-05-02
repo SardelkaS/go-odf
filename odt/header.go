@@ -54,8 +54,8 @@ func (h *Header) getRef() string {
 	return h.ref
 }
 
-func (h *Header) getFilesInfo() []FileInfo {
-	return []FileInfo{}
+func (h *Header) getFilesInfo() []fileInfo {
+	return []fileInfo{}
 }
 
 // generateStyles returns Header style

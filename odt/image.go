@@ -167,22 +167,22 @@ func (i *Image) getElementType() string {
 }
 
 // getFileInfo returns path for saving image in zip and it's MIME-type
-func (i *Image) getFileInfo() FileInfo {
+func (i *Image) getFileInfo() fileInfo {
 	if len(i.src) == 0 || i.name == "" || i.contentType == "" {
-		return FileInfo{}
+		return fileInfo{}
 	}
 
 	ext, ok := supportedImageTypes[i.contentType]
 	if !ok {
-		return FileInfo{}
+		return fileInfo{}
 	}
 
 	data, err := base64.StdEncoding.DecodeString(cleanBase64Data(i.src))
 	if err != nil {
-		return FileInfo{}
+		return fileInfo{}
 	}
 
-	return FileInfo{
+	return fileInfo{
 		Path:        fmt.Sprintf("%s/%s%s", _picturesFolder, i.name, ext),
 		ContentType: i.contentType,
 		Data:        data,

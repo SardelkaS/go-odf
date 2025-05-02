@@ -5,7 +5,8 @@
 [![GitHub Issues](https://img.shields.io/github/issues/SardelkaS/go-odf)](https://github.com/SardelkaS/go-odf/issues)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/SardelkaS/go-odf/pulls)
 
-**go-odf** is a Go library for working with **Open Document Format (ODF)** files (now only `.odt` is supported). It provides utilities to create ODF documents programmatically.
+**go-odf** is a Go library for working with **Open Document Format (ODF)** files (now only `.odt` and `.ods` is supported). 
+It provides utilities to create ODF documents programmatically.
 
 ## **Features**
 ✔ Generate new ODF files from scratch  

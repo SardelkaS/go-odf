@@ -66,8 +66,8 @@ func (p *Paragraph) generateStyles() string {
 }
 
 // getFilesInfo returns information about additional files
-func (p *Paragraph) getFilesInfo() []FileInfo {
-	var result []FileInfo
+func (p *Paragraph) getFilesInfo() []fileInfo {
+	var result []fileInfo
 	for _, e := range p.elements {
 		if e.getElementType() == _imageElement {
 			ie, ok := e.(*Image)

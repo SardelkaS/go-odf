@@ -1,42 +1,21 @@
-package odt
+package ods
 
-import (
-	"bytes"
-)
-
-type element interface {
-	getFilesInfo() []fileInfo
-	generateStyles() string
-	generate() string
-}
+import "bytes"
 
 type content struct {
-	elements []element
+	elements []*Sheet
 }
 
 // newContent creates new empty content
 func newContent() *content {
 	return &content{
-		elements: []element{},
+		elements: []*Sheet{},
 	}
 }
 
 // add adds new element
-func (c *content) add(e element) {
+func (c *content) add(e *Sheet) {
 	c.elements = append(c.elements, e)
-}
-
-// getFilesInfo returns information about additional files
-func (c *content) getFilesInfo() []fileInfo {
-	var result []fileInfo
-	for _, e := range c.elements {
-		info := e.getFilesInfo()
-		if len(info) > 0 {
-			result = append(result, info[:]...)
-		}
-	}
-
-	return result
 }
 
 // generate generates xml code
@@ -44,7 +23,7 @@ func (c *content) generate() string {
 	var contentBuffer bytes.Buffer
 
 	contentBuffer.WriteString(`<?xml version="1.0" encoding="UTF-8"?>
-<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" 
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     xmlns:ooo="http://openoffice.org/2004/office"
     xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
     xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -72,7 +51,8 @@ func (c *content) generate() string {
     xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:css3t="http://www.w3.org/TR/css3-text/"
-    xmlns:officeooo="http://openoffice.org/2009/office" office:version="1.4">
+    xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0" office:version="1.4">
+	<office:scripts />
     <office:automatic-styles>
         <style:style style:name="P1" style:family="Paragraph">
             <style:text-properties fo:font-size="12pt"/>
@@ -81,18 +61,19 @@ func (c *content) generate() string {
 	for _, e := range c.elements {
 		contentBuffer.WriteString(e.generateStyles())
 	}
-	contentBuffer.WriteString(_sectStyle)
-	contentBuffer.WriteString(_index20Style)
 
 	contentBuffer.WriteString(`</office:automatic-styles>
     <office:body>
-        <office:text>`)
+        <office:spreadsheet>
+			<table:calculation-settings table:automatic-find-labels="false"
+                table:use-regular-expressions="false" table:use-wildcards="true" />`)
 
 	for _, e := range c.elements {
 		contentBuffer.WriteString(e.generate())
 	}
 
-	contentBuffer.WriteString(`</office:text>
+	contentBuffer.WriteString(`<table:named-expressions />
+		</office:spreadsheet>
     </office:body>
 </office:document-content>`)
 

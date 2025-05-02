@@ -1,4 +1,4 @@
-package odt
+package ods
 
 import (
 	"bytes"

@@ -119,8 +119,8 @@ func (t *Table) SetCellStyle(row int, col int, s *CellStyle) {
 }
 
 // getFilesInfo returns files info
-func (t *Table) getFilesInfo() []FileInfo {
-	return []FileInfo{}
+func (t *Table) getFilesInfo() []fileInfo {
+	return []fileInfo{}
 }
 
 // generateStyles generates XML representation of the table styles

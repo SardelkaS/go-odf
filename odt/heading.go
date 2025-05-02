@@ -76,8 +76,8 @@ func (h *Heading) generateStyles() string {
 	return stylesBuffer.String()
 }
 
-func (h *Heading) getFilesInfo() []FileInfo {
-	return []FileInfo{}
+func (h *Heading) getFilesInfo() []fileInfo {
+	return []fileInfo{}
 }
 
 func (h *Heading) generate() string {

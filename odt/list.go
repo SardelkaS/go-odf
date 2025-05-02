@@ -143,8 +143,8 @@ func (l *List) AddList(subL *List) {
 	l.items = append(l.items, subL)
 }
 
-func (l *List) getFilesInfo() []FileInfo {
-	return []FileInfo{}
+func (l *List) getFilesInfo() []fileInfo {
+	return []fileInfo{}
 }
 
 func (l *List) generateStyles() string {
