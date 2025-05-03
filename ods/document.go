@@ -36,7 +36,7 @@ func (d Document) Sheet(p *Sheet) {
 
 // SaveToFile save generated data to file
 //
-// example SaveToFile("./files/test.odt")
+// example SaveToFile("./files/test.ods")
 func (d Document) SaveToFile(filePath string) error {
 	lastSlashIdx := strings.LastIndex(filePath, "/")
 	if lastSlashIdx != -1 {

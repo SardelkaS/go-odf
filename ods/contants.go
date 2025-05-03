@@ -24,4 +24,5 @@ const (
 	String     = "string"
 	Void       = "void"
 	Currency   = "currency"
+	Formula    = "formula"
 )

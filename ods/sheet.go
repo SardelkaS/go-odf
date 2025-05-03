@@ -73,17 +73,44 @@ func (s *Sheet) SetRowStyle(num int, rs *RowStyle) {
 }
 
 // SetCellStyle sets cell style for cell in row r
-func (s *Sheet) SetCellStyle(r, num int, cs *CellStyle) {
+func (s *Sheet) SetCellStyle(cell string, cs *CellStyle) error {
+	r, num, err := cellToIndices(cell)
+	if err != nil {
+		return err
+	}
+
 	s.expandCells(r, num)
 	s.rows[r].cells[num].style = cs.copy()
+	return nil
 }
 
 // SetCellValue sets cell value
 //
 // Default value type: "string", for more information see SetCellValueType
-func (s *Sheet) SetCellValue(r, num int, value string) {
+func (s *Sheet) SetCellValue(cell string, value string) error {
+	r, num, err := cellToIndices(cell)
+	if err != nil {
+		return err
+	}
+
 	s.expandCells(r, num)
 	s.rows[r].cells[num].value = value
+	return nil
+}
+
+// SetCellFormula sets formula as cell value
+//
+// Example: sheet1.SetCellFormula("B1", "=A1+A2")
+func (s *Sheet) SetCellFormula(cell string, formula string) error {
+	r, num, err := cellToIndices(cell)
+	if err != nil {
+		return err
+	}
+
+	s.expandCells(r, num)
+	s.rows[r].cells[num].value = convertFormula(formula)
+	s.rows[r].cells[num].valueType = Formula
+	return nil
 }
 
 // SetCellValueType sets cell value type
@@ -100,20 +127,34 @@ func (s *Sheet) SetCellValue(r, num int, value string) {
 //
 // For value type "currency" you need to pass the additional parameter "currency".
 // For more information see SetCellCurrency
-func (s *Sheet) SetCellValueType(r, num int, valueType string) {
+//
+// If you want to set formula as cell value see SetCellFormula
+func (s *Sheet) SetCellValueType(cell string, valueType string) error {
+	r, num, err := cellToIndices(cell)
+	if err != nil {
+		return err
+	}
+
 	s.expandCells(r, num)
 	switch valueType {
 	case Float, Percentage, Date, Time, Boolean, String, Void, Currency:
 		s.rows[r].cells[num].valueType = valueType
 	}
+	return nil
 }
 
 // SetCellCurrency sets cell currency (only for value type "currency")
 //
 // example: "USD", "EUR"
-func (s *Sheet) SetCellCurrency(r, num int, currency string) {
+func (s *Sheet) SetCellCurrency(cell string, currency string) error {
+	r, num, err := cellToIndices(cell)
+	if err != nil {
+		return err
+	}
+
 	s.expandCells(r, num)
 	s.rows[r].cells[num].currency = currency
+	return nil
 }
 
 // SetSheetStyle sets sheet style
@@ -216,7 +257,7 @@ func (s *Sheet) generate() string {
 
 			switch c.valueType {
 			case Float, Percentage:
-				buf.WriteString(fmt.Sprintf(`<table:table-cell %soffice:value-type="%s" office:value="%s"/>`, cellStyle, c.valueType, c.value))
+				buf.WriteString(fmt.Sprintf(`<table:table-cell %soffice:value-type="%s" calcext:value-type="%s" office:value="%s"><text:p>%s</text:p></table:table-cell>`, cellStyle, c.valueType, c.valueType, c.value, c.value))
 			case Currency:
 				buf.WriteString(fmt.Sprintf(`<table:table-cell %soffice:value-type="currency" office:value="%s" office:currency="%s"/>`, cellStyle, c.value, c.currency))
 			case Date:
@@ -229,6 +270,8 @@ func (s *Sheet) generate() string {
 				buf.WriteString(fmt.Sprintf(`<table:table-cell %soffice:value-type="string"><text:p>%s</text:p></table:table-cell>`, cellStyle, c.value))
 			case Void:
 				buf.WriteString(fmt.Sprintf(`<table:table-cell %soffice:value-type="void"/>`, cellStyle))
+			case Formula:
+				buf.WriteString(fmt.Sprintf(`<table:table-cell %stable:formula="%s"><text:p></text:p></table:table-cell>`, cellStyle, c.value))
 			default:
 			}
 		}
