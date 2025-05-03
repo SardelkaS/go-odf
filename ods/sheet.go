@@ -10,7 +10,6 @@ type column struct {
 	style                *ColumnStyle
 	defaultCellStyle     *CellStyle
 	defaultCellStyleName string
-	repeatedCount        int
 }
 
 type cell struct {
@@ -21,9 +20,8 @@ type cell struct {
 }
 
 type row struct {
-	style         *RowStyle
-	cells         []*cell
-	repeatedCount int
+	style *RowStyle
+	cells []*cell
 }
 
 // Sheet represents table sheet in ODS document
@@ -46,12 +44,10 @@ func NewSheet(name string) *Sheet {
 		lastCol: &column{
 			style:                NewColumnStyle().WithBreakBefore("auto").WithWidth(3),
 			defaultCellStyleName: _defaultCellStyleName,
-			repeatedCount:        16384,
 		},
 		lastRow: &row{
-			style:         NewRowStyle().WithBreakBefore("auto").WithUseOptimal(true),
-			cells:         make([]*cell, 0),
-			repeatedCount: 16384,
+			style: NewRowStyle().WithBreakBefore("auto").WithUseOptimal(true),
+			cells: make([]*cell, 0),
 		},
 	}
 }
@@ -84,6 +80,14 @@ func (s *Sheet) SetCellStyle(r, num int, cs *CellStyle) {
 
 // SetCellValue sets cell value
 //
+// Default value type: "string", for more information see SetCellValueType
+func (s *Sheet) SetCellValue(r, num int, value string) {
+	s.expandCells(r, num)
+	s.rows[r].cells[num].value = value
+}
+
+// SetCellValueType sets cell value type
+//
 // Possible value types:
 //   - "float"      : Numeric values (e.g., 42 or 3.14).
 //   - "percentage" : Percentage values (stored as 0.95 for 95%).
@@ -94,21 +98,22 @@ func (s *Sheet) SetCellStyle(r, num int, cs *CellStyle) {
 //   - "string"     : Text content.
 //   - "void"       : Empty cell (may still carry styles).
 //
-// For value type "currency" you need to pass the additional parameter "currency" (example: "USD", "EUR")
-func (s *Sheet) SetCellValue(r, num int, value string, valueType string, currency ...string) {
+// For value type "currency" you need to pass the additional parameter "currency".
+// For more information see SetCellCurrency
+func (s *Sheet) SetCellValueType(r, num int, valueType string) {
 	s.expandCells(r, num)
 	switch valueType {
-	case Float, Percentage, Date, Time, Boolean, String, Void:
+	case Float, Percentage, Date, Time, Boolean, String, Void, Currency:
 		s.rows[r].cells[num].valueType = valueType
-		s.rows[r].cells[num].value = value
-	case Currency:
-		if len(currency) == 0 {
-			return
-		}
-		s.rows[r].cells[num].valueType = valueType
-		s.rows[r].cells[num].value = value
-		s.rows[r].cells[num].currency = currency[0]
 	}
+}
+
+// SetCellCurrency sets cell currency (only for value type "currency")
+//
+// example: "USD", "EUR"
+func (s *Sheet) SetCellCurrency(r, num int, currency string) {
+	s.expandCells(r, num)
+	s.rows[r].cells[num].currency = currency
 }
 
 // SetSheetStyle sets sheet style
@@ -125,7 +130,6 @@ func (s *Sheet) expandColumns(num int) {
 		s.columns = append(s.columns, &column{
 			style:                NewColumnStyle().WithBreakBefore("auto").WithWidth(3),
 			defaultCellStyleName: _defaultCellStyleName,
-			repeatedCount:        1,
 		})
 	}
 }
@@ -137,9 +141,8 @@ func (s *Sheet) expandRows(num int) {
 		}
 
 		s.rows = append(s.rows, &row{
-			style:         NewRowStyle().WithBreakBefore("auto").WithUseOptimal(true),
-			cells:         make([]*cell, 0),
-			repeatedCount: 1,
+			style: NewRowStyle().WithBreakBefore("auto").WithUseOptimal(true),
+			cells: make([]*cell, 0),
 		})
 	}
 }
@@ -194,13 +197,13 @@ func (s *Sheet) generate() string {
 	buf.WriteString(fmt.Sprintf(` <table:table table:name="%s" table:style-name="%s">`, s.name, s.style.name))
 
 	for _, c := range s.columns {
-		buf.WriteString(fmt.Sprintf(`<table:table-column table:style-name="%s" table:number-columns-repeated="%s" table:default-cell-style-name="%s" />`,
-			c.style.name, strconv.FormatInt(int64(c.repeatedCount), 10), c.defaultCellStyleName))
+		buf.WriteString(fmt.Sprintf(`<table:table-column table:style-name="%s" table:number-columns-repeated="1" table:default-cell-style-name="%s" />`,
+			c.style.name, c.defaultCellStyleName))
 	}
 
 	if s.lastCol != nil {
-		buf.WriteString(fmt.Sprintf(`<table:table-column table:style-name="%s" table:number-columns-repeated="%s" table:default-cell-style-name="%s" />`,
-			s.lastCol.style.name, strconv.FormatInt(int64(s.lastCol.repeatedCount), 10), s.lastCol.defaultCellStyleName))
+		buf.WriteString(fmt.Sprintf(`<table:table-column table:style-name="%s" table:number-columns-repeated="16384" table:default-cell-style-name="%s" />`,
+			s.lastCol.style.name, s.lastCol.defaultCellStyleName))
 	}
 
 	for _, r := range s.rows {
@@ -234,8 +237,8 @@ func (s *Sheet) generate() string {
 	}
 
 	if s.lastRow != nil {
-		buf.WriteString(fmt.Sprintf(`<table:table-row table:style-name="%s" table:number-rows-repeated="1048571"><table:table-cell table:number-columns-repeated="%s" /></table:table-row>`,
-			s.lastRow.style.name, strconv.FormatInt(int64(s.lastRow.repeatedCount), 10)))
+		buf.WriteString(fmt.Sprintf(`<table:table-row table:style-name="%s" table:number-rows-repeated="1048571"><table:table-cell table:number-columns-repeated="16384" /></table:table-row>`,
+			s.lastRow.style.name))
 	}
 
 	buf.WriteString(`</table:table>`)
