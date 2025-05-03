@@ -66,9 +66,10 @@ func main() {
 
 	// add data to sheet
 	sheet1.SetCellStyle(0, 0, cellStyle1)
-	sheet1.SetCellValue(0, 0, "test", ods.String)
-	sheet1.SetCellValue(0, 1, "0.95", ods.Float)
-	sheet1.SetCellValue(3, 4, "test test", ods.String)
+	sheet1.SetCellValue(0, 0, "test")
+	sheet1.SetCellValueType(0, 1, ods.Float)
+	sheet1.SetCellValue(0, 1, "0.95")
+	sheet1.SetCellValue(3, 4, "test test")
 
 	// change metadata
 	odsFile.Meta.SetInitialCreator("Hi it's me")
