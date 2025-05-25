@@ -71,12 +71,6 @@ func main() {
 	_ = sheet1.SetCellValue("B1", "0.95")
 	_ = sheet1.SetCellValue("D3", "test test")
 
-	// change metadata
-	odsFile.Meta.SetInitialCreator("Hi it's me")
-	odsFile.Meta.SetCreator("It's me too")
-	odsFile.Meta.SetSubject("just test odt file")
-	odsFile.Meta.SetDescription("just test odt file")
-
 	// save generated file
 	err := odsFile.SaveToFile("./example.ods")
 	if err != nil {
