@@ -32,6 +32,7 @@ type Sheet struct {
 	rows    []*row
 	lastCol *column
 	lastRow *row
+	charts  []*Chart
 }
 
 // NewSheet creates new empty Sheet with provided name
@@ -49,7 +50,13 @@ func NewSheet(name string) *Sheet {
 			style: NewRowStyle().WithBreakBefore("auto").WithUseOptimal(true),
 			cells: make([]*cell, 0),
 		},
+		charts: make([]*Chart, 0),
 	}
+}
+
+// AddChart adds chart to sheet
+func (s *Sheet) AddChart(c *Chart) {
+	s.charts = append(s.charts, c)
 }
 
 // SetColumnStyle sets column style
@@ -229,6 +236,12 @@ func (s *Sheet) generateStyles() string {
 		}
 	}
 
+	for _, ch := range s.charts {
+		if ch.style != nil {
+			stylesBuffer.WriteString(ch.style.generate())
+		}
+	}
+
 	return stylesBuffer.String()
 }
 
@@ -236,6 +249,12 @@ func (s *Sheet) generate() string {
 	var buf bytes.Buffer
 
 	buf.WriteString(fmt.Sprintf(` <table:table table:name="%s" table:style-name="%s">`, s.name, s.style.name))
+
+	buf.WriteString(`<table:shapes>`)
+	for _, ch := range s.charts {
+		buf.WriteString(ch.generate())
+	}
+	buf.WriteString(`</table:shapes>`)
 
 	for _, c := range s.columns {
 		buf.WriteString(fmt.Sprintf(`<table:table-column table:style-name="%s" table:number-columns-repeated="1" table:default-cell-style-name="%s" />`,
