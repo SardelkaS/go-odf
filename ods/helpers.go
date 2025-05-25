@@ -51,3 +51,13 @@ func cellToIndices(cell string) (row, col int, err error) {
 
 	return row, col, nil
 }
+
+// escapeXML escapes symbols for xml
+func escapeXML(s string) string {
+	s = strings.ReplaceAll(s, "&", "&amp;")
+	s = strings.ReplaceAll(s, "<", "&lt;")
+	s = strings.ReplaceAll(s, ">", "&gt;")
+	s = strings.ReplaceAll(s, "\"", "&quot;")
+	s = strings.ReplaceAll(s, "'", "&apos;")
+	return s
+}

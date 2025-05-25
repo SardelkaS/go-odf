@@ -28,8 +28,8 @@ func main() {
 	// change metadata
 	odsFile.Meta.SetInitialCreator("Hi it's me")
 	odsFile.Meta.SetCreator("It's me too")
-	odsFile.Meta.SetSubject("just test odt file")
-	odsFile.Meta.SetDescription("just test odt file")
+	odsFile.Meta.SetSubject("just test ods file")
+	odsFile.Meta.SetDescription("just test ods file")
 
 	// save generated file
 	err := odsFile.SaveToFile("./examples/ods/example-base/example.ods")
