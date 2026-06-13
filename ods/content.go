@@ -18,6 +18,17 @@ func (c *content) add(e *Sheet) {
 	c.elements = append(c.elements, e)
 }
 
+// getFilesInfo returns information about additional files required by the
+// charts placed on the sheets
+func (c *content) getFilesInfo() []fileInfo {
+	var result []fileInfo
+	for _, e := range c.elements {
+		result = append(result, e.getFilesInfo()...)
+	}
+
+	return result
+}
+
 // generate generates xml code
 func (c *content) generate() string {
 	var contentBuffer bytes.Buffer

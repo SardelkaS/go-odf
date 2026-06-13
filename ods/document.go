@@ -64,6 +64,9 @@ func (d Document) SaveToFile(filePath string) error {
 
 // GetBytes return generated file in bytes.Buffer
 func (d Document) GetBytes() (*bytes.Buffer, error) {
+	filesInfo := d.content.getFilesInfo()
+	d.manifest.addEntries(filesInfo)
+
 	buf := new(bytes.Buffer)
 	zipWriter := zip.NewWriter(buf)
 	defer func(zipWriter *zip.Writer) {
@@ -98,6 +101,24 @@ func (d Document) GetBytes() (*bytes.Buffer, error) {
 		}
 
 		_, err = io.WriteString(zipFile, data)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	for _, file := range filesInfo {
+		// directory entries (e.g. embedded chart object folders) are only
+		// declared in the manifest and have no content to write
+		if len(file.Data) == 0 {
+			continue
+		}
+
+		zipFile, err := zipWriter.Create(file.Path)
+		if err != nil {
+			return nil, err
+		}
+
+		_, err = zipFile.Write(file.Data)
 		if err != nil {
 			return nil, err
 		}

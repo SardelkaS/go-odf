@@ -7,7 +7,7 @@ const (
 	_stylesFileName   = "styles.xml"
 	_contentFileName  = "content.xml"
 	_mimeTypeFileName = "mimetype"
-	_manifestFileName = "META_INF/manifest.xml"
+	_manifestFileName = "META-INF/manifest.xml"
 )
 
 const (

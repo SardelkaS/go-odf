@@ -54,6 +54,11 @@ func (d Document) Heading(h *Heading) {
 	d.content.add(h)
 }
 
+// Chart adds new Chart
+func (d Document) Chart(c *Chart) {
+	d.content.add(c)
+}
+
 // PageStyle sets page style
 func (d Document) PageStyle(ps *PageStyle) {
 	d.styles.pageStyle = ps
@@ -132,6 +137,12 @@ func (d Document) GetBytes() (*bytes.Buffer, error) {
 	}
 
 	for _, file := range filesInfo {
+		// directory entries (e.g. embedded chart object folders) are only
+		// declared in the manifest and have no content to write
+		if len(file.Data) == 0 {
+			continue
+		}
+
 		zipFile, err := zipWriter.Create(file.Path)
 		if err != nil {
 			return nil, err

@@ -32,6 +32,7 @@ type Sheet struct {
 	rows    []*row
 	lastCol *column
 	lastRow *row
+	charts  []*Chart
 }
 
 // NewSheet creates new empty Sheet with provided name
@@ -162,6 +163,23 @@ func (s *Sheet) SetSheetStyle(ss *SheetStyle) {
 	s.style = ss.copy()
 }
 
+// AddChart adds a Chart to the sheet. The chart is rendered as a floating
+// object positioned via Chart.SetPosition / Chart.SetSize
+func (s *Sheet) AddChart(c *Chart) {
+	s.charts = append(s.charts, c)
+}
+
+// getFilesInfo returns information about additional files required by the
+// charts placed on the sheet
+func (s *Sheet) getFilesInfo() []fileInfo {
+	var result []fileInfo
+	for _, c := range s.charts {
+		result = append(result, c.getFilesInfo()...)
+	}
+
+	return result
+}
+
 func (s *Sheet) expandColumns(num int) {
 	for {
 		if len(s.columns) > num {
@@ -229,6 +247,10 @@ func (s *Sheet) generateStyles() string {
 		}
 	}
 
+	for _, c := range s.charts {
+		stylesBuffer.WriteString(c.generateStyles())
+	}
+
 	return stylesBuffer.String()
 }
 
@@ -236,6 +258,14 @@ func (s *Sheet) generate() string {
 	var buf bytes.Buffer
 
 	buf.WriteString(fmt.Sprintf(` <table:table table:name="%s" table:style-name="%s">`, s.name, s.style.name))
+
+	if len(s.charts) > 0 {
+		buf.WriteString(`<table:shapes>`)
+		for _, c := range s.charts {
+			buf.WriteString(c.generate())
+		}
+		buf.WriteString(`</table:shapes>`)
+	}
 
 	for _, c := range s.columns {
 		buf.WriteString(fmt.Sprintf(`<table:table-column table:style-name="%s" table:number-columns-repeated="1" table:default-cell-style-name="%s" />`,
